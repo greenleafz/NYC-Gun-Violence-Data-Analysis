@@ -16,7 +16,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 We start by importing the required libraries.
 
-```{r, message=FALSE} 
+```{r, message=FALSE}
+### Uncomment the line below to install packages
+
+# install.packages('tidyverse', 'lubridate', 'ggmap', 'fastDummies', 'dbplyr', 'corrplot', 'missMDA', 'RANN', 'e1071', 'superml', 'ranger')
 library(tidyverse)
 library(lubridate)
 library(ggmap)
