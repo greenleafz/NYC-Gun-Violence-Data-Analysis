@@ -1,8 +1,10 @@
 ---
-title: "An Analysis of Violent Gun Crime in New York City from 2006"
+title: "An Analysis of Violent Gun Crime in New York City from 2006 to Present"
 author: "Zach Greenleaf"
 date: "`r Sys.Date()`"
-output: pdf_document
+output:
+  html_document:
+    keep_md: true
 ---
 
 Violent gun crime is currently a hot topic in the debate over responsible gun control laws.
@@ -49,6 +51,7 @@ A cursory view of the data reveals a few issues.  We have improper data types, m
 and some features that don't hold meaning for us.
 ```{r}
 print(head(df))
+
 ```
 We will add a combined Date and Time column, to enable chronological sorting, and
 fix the column data types.
@@ -243,7 +246,7 @@ corrplot(correlation, tl.cex=.6, method = "number")
 # Section 3: Modelling
 
 We will try to predict, from this data, which BORO a crime is occurring in.
-First, we prepare our dataset to use for modelling.  We remove OCCUR_DATETIME and PRECINT, with the justification from section 2.  We also convert OCCUR_DATE and OCCUR_TIME to numeric values, as required for our models, and convert our categorical data to factors.  Our modelling strategy will be to use a multiple linear regression to get a feel for the important factors in our data, then move on to more advanced models.  We have selected a support vector machine for its strong performance in high dimension, low density spaces.  We will also investigate a grid searched random forest.  Other options could be: a gradient boosted decision tree, or a neural network.
+First, we prepare our dataset to use for modelling.  We remove OCCUR_DATETIME and PRECINT, with the justification from section 2.  We also convert OCCUR_DATE and OCCUR_TIME to numeric values, as required for our models, and convert our categorical data to factors.  Our modelling strategy will be to use a multiple logistic regression to get a feel for the important factors in our data, then move on to more advanced models.  We have selected a support vector machine for its strong performance in high dimension, low density spaces.  We will also investigate a grid searched random forest.  Other options could be: a gradient boosted decision tree, or a neural network.
 We also perform a train/test split on our data.  We will use a randomly selected 80% for training, and reserve the remaining 20% for validation.
 
 ```{r}
@@ -288,7 +291,7 @@ y_pred = predict(classifier, newdata = test)
 conf_matrix = table(test[,3], y_pred)
 conf_matrix
 ```
-A grid searched random forest is attempted below.  The resulting model provides slightly worse than a random guess in it's current state, as evidenced by the AUC score.  This model is also not a good fit.
+A grid searched random forest is attempted below.  The resulting model provides slightly better than a random guess in it's current state, as evidenced by the AUC score.  This model is a poor fit in it's current state.
 ```{r}
 parameters = list(max_features = c('sqrt', 'log'),
                  max_depth = seq(1,10,1))
